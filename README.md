@@ -12,7 +12,7 @@ This repository hosts the LAS Viewer, a web-based application built using **Stre
 ## Installation
 To run the LAS Viewer locally, first, clone the repository:
 ```sh
-git clone https://github.com/YOUR_USERNAME/LAS-Viewer.git
+git clone https://github.com/northcarolinageologicalsurvey/LAS-Viewer.git
 cd LAS-Viewer
 ```
 
