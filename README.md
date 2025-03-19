@@ -21,14 +21,14 @@ Then, install the dependencies:
 pip install -r requirements.txt
 ```
 
-## Running the App
+## Running the App Locally
 To launch the app, use the following command:
 ```sh
 streamlit run app.py
 ```
+This app will open in yoour web browser.
 
 ## Deployment
-This app will open in your web browser.
 
 ## Repository Structure
 ```
