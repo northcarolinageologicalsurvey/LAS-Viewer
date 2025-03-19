@@ -14,7 +14,7 @@ You can access the NCGS LAS Viewer directly without installing anything:
 [NCGS LAS Viewer App](https://las-viewer-ncgs.streamlit.app)
 
 ## Installation
-To run the LAS Viewer locally you must have a Python language compiler on your computer: [to install Python compiler](https://www.python.org/).
+To run the LAS Viewer locally you must have a Python language compiler on your computer: [to install Python compiler](https://www.python.org/).   
 First, clone the repository:
 
 ```sh
