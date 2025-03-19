@@ -42,6 +42,3 @@ LAS-Viewer/
 │   └── deploy.yml        # GitHub Actions deployment
 ```
 
-## Contributing
-Feel free to fork the repository, create a feature branch, and submit a pull request!
-
