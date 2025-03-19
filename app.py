@@ -159,8 +159,7 @@ las_files, well_data_list = load_data(uploaded_files)
 
 if las_files:
     st.sidebar.success(f"{len(las_files)} files uploaded successfully")
-    display_well_location(las_files)  # Display the last uploaded well location
-
+    display_well_locations(las_files)  # Calls the updated function for multiple wells
 st.sidebar.title('Navigation')
 options = st.sidebar.radio('Select a page:', 
     ['Home', 'Header Information', 'Data Information', 'Curve Comparison', 'Missing Data'])
