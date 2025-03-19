@@ -28,7 +28,7 @@ streamlit run app.py
 ```
 
 ## Deployment
-This application can be deployed using **Streamlit Sharing**, **GitHub Actions**, or other cloud platforms.
+This app will open in your web browser.
 
 ## Repository Structure
 ```
