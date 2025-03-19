@@ -9,10 +9,11 @@ import plotly.graph_objects as go
 st.set_page_config(layout="wide", page_title='LAS Explorer')
 
 st.sidebar.write('# LAS Data Viewer\n **North Carolina Geological Survey**')
-st.sidebar.write('\nTo begin using the app, load a LAS file using the file upload option below.')
+st.sidebar.write('\nTo begin using the app, load LAS files using the file upload option below.')
 
 @st.cache_data
 def load_data(uploaded_files):
+    """Load multiple LAS files and extract well data."""
     las_files = []
     well_data_list = []
 
@@ -55,12 +56,7 @@ def display_well_location(las_file):
             zoom=6, height=500, mapbox_style="open-street-map",
             title="Well Location"
         )
-
-        fig.update_traces(
-            marker=dict(size=12, color="red"),
-            hovertemplate=f"well: {well_name}<br>lat: {latitude}<br>lon: {longitude}<extra></extra>"
-        )
-
+        fig.update_traces(marker=dict(size=12, color="red"))
         st.plotly_chart(fig)
     else:
         st.warning("No valid well location found in the uploaded LAS file.")
@@ -107,6 +103,41 @@ def plot_multi_wells(las_files, well_data_list):
 
     st.plotly_chart(fig, use_container_width=True)
 
+def missing_data_visualization(las_files, well_data_list):
+    """Visualize missing data for selected wells."""
+    st.title('Missing Data Visualization')
+
+    if not las_files:
+        st.warning('No files have been uploaded')
+        return
+
+    missing_fig = make_subplots(rows=1, cols=len(las_files), shared_yaxes=True,
+                                subplot_titles=[las.well.WELL.value if 'WELL' in las.well else "Unnamed Well" for las in las_files],
+                                horizontal_spacing=0.02)
+
+    for i, (las_file, well_data) in enumerate(zip(las_files, well_data_list), start=1):
+        missing_data = well_data.isnull().astype(int)  # Convert missing values to 1s
+        for curve in well_data.columns:
+            if curve != 'DEPTH':
+                missing_fig.add_trace(
+                    go.Scatter(
+                        x=missing_data[curve], y=well_data['DEPTH'],
+                        fill='tozerox', mode='none',
+                        name=f"{las_file.well.WELL.value if 'WELL' in las_file.well else 'Unnamed Well'} - {curve}"
+                    ),
+                    row=1, col=i
+                )
+
+        missing_fig.update_xaxes(range=[0, 1], title_text="Missing Data (1=Missing, 0=Present)", row=1, col=i)
+
+    missing_fig.update_layout(
+        height=800,
+        yaxis=dict(title='DEPTH', autorange='reversed'),
+        showlegend=True
+    )
+
+    st.plotly_chart(missing_fig, use_container_width=True)
+
 uploaded_files = st.sidebar.file_uploader(
     'Upload LAS Files', type=['.las'], accept_multiple_files=True
 )
@@ -115,11 +146,11 @@ las_files, well_data_list = load_data(uploaded_files)
 
 if las_files:
     st.sidebar.success(f"{len(las_files)} files uploaded successfully")
-    display_well_location(las_files[-1])  # Display only the most recent well location
+    display_well_location(las_files[-1])  # Display the last uploaded well location
 
 st.sidebar.title('Navigation')
 options = st.sidebar.radio('Select a page:', 
-    ['Home', 'Header Information', 'Data Information', 'Curve Comparison'])
+    ['Home', 'Header Information', 'Data Information', 'Curve Comparison', 'Missing Data'])
 
 def home():
     st.title('Log ASCII Standard (LAS) - Well Geophysical Data Viewer')
@@ -157,3 +188,5 @@ elif options == 'Data Information':
     raw_data(las_files, well_data_list)
 elif options == 'Curve Comparison':
     plot_multi_wells(las_files, well_data_list)
+elif options == 'Missing Data':
+    missing_data_visualization(las_files, well_data_list)
