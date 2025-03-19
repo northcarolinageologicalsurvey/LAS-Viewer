@@ -5,9 +5,13 @@ This repository hosts the LAS Viewer, a web-based application built using **Stre
 ## Features
 - Upload and read LAS files.
 - Display well log curve information.
-- Interactive visualizations using Plotly.
+- Interactive visualizations using.
 - Histogram and crossplot analysis.
 - Identify missing data ranges.
+
+### Use the App Online
+You can access the NCGS LAS Viewer directly without installing anything:
+[NCGS LAS Viewer App](https://las-viewer-ncgs.streamlit.app)
 
 ## Installation
 To run the LAS Viewer locally, first, clone the repository:
