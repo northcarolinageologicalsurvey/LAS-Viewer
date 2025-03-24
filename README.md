@@ -17,6 +17,11 @@ This repository hosts the LAS Viewer, a web-based application built using **Stre
 - Identify missing data ranges
 
 # **Use the App Online**
+<style>
+  body {
+    background-color: lightblue; 
+  }
+</style>
 You can access the NCGS LAS Viewer directly without installing anything:
 [NCGS LAS Viewer App](https://las-viewer-ncgs.streamlit.app)
 
