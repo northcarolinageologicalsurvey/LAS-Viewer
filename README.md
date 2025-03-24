@@ -35,11 +35,11 @@ pip install -r requirements.txt
 ```
 
 ## Running the App Locally
-To launch the app, use the following command:
+To launch the app, in a command line window, use the following command:
 ```sh
 streamlit run app.py
 ```
-This app will open in yoour web browser.
+This app will open in your web browser.
 
 ## Deployment
 
