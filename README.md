@@ -10,11 +10,11 @@
 This repository hosts the LAS Viewer, a web-based application built using **Streamlit** to visualize Log ASCII Standard (LAS) well log data.
 
 ## Features
-- Upload and read LAS files.
-- Display well log curve information.
-- Interactive visualizations using.
-- Histogram and crossplot analysis.
-- Identify missing data ranges.
+- Upload and read LAS files
+- Display well log curve information
+- Interactive visualizations
+- Histogram and crossplot analysis
+- Identify missing data ranges
 
 # **Use the App Online**
 You can access the NCGS LAS Viewer directly without installing anything:
