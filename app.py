@@ -30,32 +30,46 @@ def load_data(uploaded_files):
 
     return las_files, well_data_list
 
-def display_well_location(las_file):
-    well_name = las_file.well.WELL.value if 'WELL' in las_file.well else "Unnamed Well"
-    latitude, longitude = None, None
+def display_all_well_locations(las_files):
+    """Plot all wells with valid lat/lon on a single map."""
+    well_locations = []
 
-    for key in ['LAT', 'SLAT']:
-        if key in las_file.well:
-            latitude = las_file.well[key].value
-            break
-    for key in ['LONG', 'SLON']:
-        if key in las_file.well:
-            longitude = las_file.well[key].value
-            break
+    for las in las_files:
+        well_name = las.well.WELL.value if 'WELL' in las.well else "Unnamed Well"
+        lat, lon = None, None
 
-    if latitude and longitude:
+        for key in ['LAT', 'SLAT']:
+            if key in las.well:
+                lat = las.well[key].value
+                break
+
+        for key in ['LONG', 'SLON']:
+            if key in las.well:
+                lon = las.well[key].value
+                break
+
+        if lat and lon:
+            well_locations.append({
+                "well_name": well_name,
+                "lat": lat,
+                "lon": lon
+            })
+
+    if well_locations:
+        df = pd.DataFrame(well_locations)
         fig = px.scatter_mapbox(
-            lat=[latitude], lon=[longitude], text=[well_name],
-            zoom=6, height=500, mapbox_style="open-street-map",
-            title="Well Location"
+            df, lat="lat", lon="lon", text="well_name",
+            zoom=5, height=500, mapbox_style="open-street-map",
+            title="Well Locations"
         )
         fig.update_traces(
             marker=dict(size=12, color="red"),
-            hovertemplate=f"well: {well_name}<br>lat: {latitude}<br>lon: {longitude}<extra></extra>"
+            hovertemplate="well: %{text}<br>lat: %{lat}<br>lon: %{lon}<extra></extra>"
         )
         st.plotly_chart(fig)
     else:
-        st.warning("No valid well location found in the uploaded LAS file.")
+        st.warning("No valid well locations found.")
+
 
 def plot_multi_wells(las_files, well_data_list):
     st.title('Multi-Well Curve Comparison')
@@ -237,7 +251,7 @@ las_files, well_data_list = load_data(uploaded_files)
 
 if las_files:
     st.sidebar.success(f"{len(las_files)} files uploaded successfully")
-    display_well_location(las_files[-1])
+    display_all_well_locations(las_files)
 
 st.sidebar.title('Navigation')
 options = st.sidebar.radio('Select a page:', 
